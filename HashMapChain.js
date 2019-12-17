@@ -1,7 +1,7 @@
 import LinkedList from './linkedlist'
 
 class HashMapChain {
-    constructor(initialCapacity=8) {
+    constructor(initialCapacity = 8) {
         this.length = 0;
         this._hashTable = [];
         this._capacity = initialCapacity;
@@ -10,40 +10,52 @@ class HashMapChain {
 
     get(key) {
         const index = this._findSlot(key);
-        if (this._hashTable[index] === undefined) {
-            throw new Error('Key error');
+        if (!this._hashTable[index]) {
+            return undefined;
         }
-        return this._hashTable[index].value;
+        let list = this._hashTable[index]
+        let node = list.head
+        while (node !== null && node.value.key !== key) {
+            node = node.next
+        }
+        if (node !== null) {
+            return node.value.value
+        }
     }
 
-    set(key, value){
-        const loadRatio = (this.length + this._deleted + 1) / this._capacity;
-        if (loadRatio > this.MAX_LOAD_RATIO) {
-            this._resize(this._capacity * this.SIZE_RATIO);
-        }
-        const hash = HashMap._hashString(key)
-        const index = hash % this._capacity
+    set(key, value) {
+        //Find the slot where this key should be in
+        const index = this._findSlot(key);
 
-        if(!this._hashTable[index]){
-            let  = 
+        if (!this._hashTable[index]) {
+            this._hashTable[index] = new LinkedList()
+
             this.length++;
         }
-        this._hashTable[index] = {
+        
+        let value = {
             key,
             value,
             DELETED: false
-        }; 
+        };
+        this._hashTable[index].insertLast(value)
     }
 
     delete(key) {
         const index = this._findSlot(key);
         const slot = this._hashTable[index];
         if (slot === undefined) {
-            throw new Error('Key error');
+            return undefined;
         }
         slot.DELETED = true;
         this.length--;
         this._deleted++;
+    }
+
+    _findSlot(key) {
+        const hash = HashMapOpen._hashString(key);
+        const index = hash % this._capacity;
+        return index
     }
 
     _resize(size) {

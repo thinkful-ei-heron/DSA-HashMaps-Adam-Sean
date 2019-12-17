@@ -74,7 +74,8 @@ function deleteDuplicates(str) {
     }
 }
 
-// deleteDuplicates('google')
+deleteDuplicates('google')
+0
 
 
 
@@ -97,22 +98,26 @@ function anyPermutation(str) {
     return console.log(true)
 }
 
-// anyPermutation('acecarr')
+anyPermutation('aceecarre')
 
 //--------------------------------------------------
 // 6. Anagram grouping
 
 function groupAnagrams(arr) {
     let hashMap = new HashMapOpen
-    let anagrams = []
-    let group = []
+    anagrams = []
+
     for (let i = 0; i < arr.length; i++) {
-        if (hashMap.get(arr[i]) === undefined) {
-            group.push
-            hashMap.set(arr[i], arr[i])
+        let sorted = arr[i].split('').sort().join('')
+        if (hashMap.get(sorted) === undefined) {
+            hashMap.set(sorted, [arr[i]])
+        }
+        else {
+            hashMap.get(sorted).push(arr[i])
         }
     }
-
+    hashMap._hashTable.forEach(obj => anagrams.push(obj.value))
+    console.log(anagrams)
 }
 
 groupAnagrams(['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race'])
